@@ -127,7 +127,7 @@ if(function_exists("register_field_group"))
 				'name' => 'birth_date',
 				'type' => 'date_picker',
 				'date_format' => 'yymmdd',
-				'display_format' => 'dd/mm/yy',
+				'display_format' => 'mm/dd/yy',
 				'first_day' => 1,
 			),
 			array (
@@ -236,7 +236,7 @@ if(function_exists("register_field_group"))
 				'name' => 'start_date',
 				'type' => 'date_picker',
 				'date_format' => 'yymmdd',
-				'display_format' => 'dd/mm/yy',
+				'display_format' => 'mm/dd/yy',
 				'first_day' => 1,
 			),
 			array (
@@ -245,7 +245,7 @@ if(function_exists("register_field_group"))
 				'name' => 'end_date',
 				'type' => 'date_picker',
 				'date_format' => 'yymmdd',
-				'display_format' => 'dd/mm/yy',
+				'display_format' => 'mm/dd/yy',
 				'first_day' => 1,
 			),
 		),
@@ -312,7 +312,7 @@ if(function_exists("register_field_group"))
 				'name' => 'work_date',
 				'type' => 'date_picker',
 				'date_format' => 'yymmdd',
-				'display_format' => 'dd/mm/yy',
+				'display_format' => 'mm/dd/yy',
 				'first_day' => 1,
 			),
 			array (
