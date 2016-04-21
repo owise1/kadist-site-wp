@@ -230,6 +230,15 @@ if(function_exists("register_field_group"))
 		'id' => 'acf_program-fields',
 		'title' => 'Program Fields',
 		'fields' => array (
+      array (
+				'key' => 'field_57194992841e2',
+				'label' => 'French Translation',
+				'name' => 'fr',
+				'type' => 'wysiwyg',
+				'default_value' => '',
+				'toolbar' => 'full',
+				'media_upload' => 'yes',
+			),
 			array (
 				'key' => 'field_5717d9c704fc9',
 				'label' => 'Start Date',
@@ -247,6 +256,18 @@ if(function_exists("register_field_group"))
 				'date_format' => 'yymmdd',
 				'display_format' => 'mm/dd/yy',
 				'first_day' => 1,
+			),
+			array (
+				'key' => 'field_57175553a8826',
+				'label' => 'Original ID',
+				'name' => 'oid',
+				'type' => 'text',
+				'default_value' => '',
+				'placeholder' => '',
+				'prepend' => '',
+				'append' => '',
+				'formatting' => 'html',
+				'maxlength' => '',
 			),
 		),
 		'location' => array (
