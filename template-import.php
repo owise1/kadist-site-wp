@@ -10,68 +10,105 @@
   <pre>
 <?php
 
-$run = false;
+include("import/functions.php");
+
+$run = true;
 $images = false;
-$howMany = 10;
-
-// functions
-function dateFormat($d, $fmt='Ymd') {
-  return date($fmt, strtotime($d));
-}
-function _import_photo( $postid, $url ) {
-	$post = get_post( $postid );
-	if( empty( $post ) )
-		return false;
-
-	if( !class_exists( 'WP_Http' ) )
-	  include_once( ABSPATH . WPINC. '/class-http.php' );
-
-	$photo = new WP_Http();
-	$photo = $photo->request( $url );
-	if( $photo['response']['code'] != 200 )
-		return false;
-
-	$attachment = wp_upload_bits( rand() . '.jpg', null, $photo['body'], date("Y-m", strtotime( $photo['headers']['last-modified'] ) ) );
-	if( !empty( $attachment['error'] ) )
-		return false;
-
-	$filetype = wp_check_filetype( basename( $attachment['file'] ), null );
-
-	$postinfo = array(
-		'post_mime_type'	=> $filetype['type'],
-		'post_title'		=> $post->post_title,
-		'post_content'		=> '',
-		'post_status'		=> 'inherit',
-	);
-	$filename = $attachment['file'];
-	$attach_id = wp_insert_attachment( $postinfo, $filename, $postid );
-
-	if( !function_exists( 'wp_generate_attachment_data' ) )
-		require_once(ABSPATH . "wp-admin" . '/includes/image.php');
-	$attach_data = wp_generate_attachment_metadata( $attach_id, $filename );
-	wp_update_attachment_metadata( $attach_id,  $attach_data );
-	return $attach_id;
-}
+$howMany = 2;
 
 $locations = array('1' => 'paris', '2' => 'san-francisco', '2079' => 'offsite');
 // get posts
 $posts = json_decode(file_get_contents(__DIR__ . "/import/kadist.json"));
+
+// works
+$works = array_values(array_filter($posts, function ($node) {
+  return($node->type == 'work');
+}));
+$works = array_slice($works, 0, $howMany);
+$productions = array('N/A', 'Produced by Kadist', 'Co-produced by Kadist');
+$media = array(
+  '1230' => 'c-print',
+  '1808' => 'oil-on-canvas',
+  '2173' => 'plastic-bags-and-paint',
+  '2152' => 'framed-with-uv-glass-and-acid-free-board',
+  '2151' => 'charcoal-and-pastel-on-paper',
+  '2148' => 'photgraphic-installation',
+  '2063' => 'base',
+  '2062' => 'lucite-blocks',
+  '2061' => 'oil-paint',
+  '2060' => '23-sheets-of-glass',
+  '1881' => 'film-video',
+  '1235' => 'mixed-media',
+  '1949' => 'video-installation',
+  '2008' => 'text',
+  '1226' => 'collage',
+  '1228' => 'sculpture',
+  '1239' => 'performance',
+  '1231' => 'painting',
+  '1238' => 'print',
+  '1552' => 'photography',
+  '1234' => 'photograph',
+  '1237' => 'drawing',
+  '1229' => 'installation',
+  '1236' => 'film',
+  '1236' => 'film',
+  '1224' => 'video',
+);
+$collections = array(
+  '3' => 'paris',
+  '5' => 'a3',
+  '7' => 'video-americas',
+  '4' => '101',
+  '6' => 'el-sur',
+);
+
+foreach($works as $thing){
+  $post = createPostCommon($thing);
+  $post['post_type'] = 'work';
+
+
+  if ($run) {
+    $id = wp_insert_post($post);
+    // weight
+    update_field('field_5717f2064a20e', $thing->field_weight->und[0]->value, $id);
+    // size
+    update_field('field_5717f29f4a212', $thing->field_size->und[0]->value, $id);
+    // new acqusition?
+    $newAc = $thing->field_new_acquisition && $thing->field_new_acquisition->und[0]->value;
+    update_field('field_5717f20f4a20f', $newAc, $id);
+    // produced by
+    $productionI = 0;
+    if ($thing->field_production) $productionI = $thing->field_production->und[0]->value;
+    update_field('field_5717f2274a210', $productions[$productionI], $id);
+    // work date
+    update_field('field_5717f25d4a211', dateFormat($thing->field_workdate->und[0]->value), $id);
+    // medium
+    if ($thing->field_medium->und[0]->tid){
+      $mediumSlug = $media[ $thing->field_medium->und[0]->tid ];
+      wp_set_object_terms($id, $mediumSlug, 'medium');
+    }
+    // collection
+    if ($thing->field_collection->und[0]->tid) {
+      wp_set_object_terms($id, $collections[$thing->field_collection->und[0]->tid], 'collections');
+    }
+
+    // images
+    fetchImages($id, $thing, $images);
+  }
+
+}
+return;
+
+// programs
 $programs = array_values(array_filter($posts, function ($node) {
   return($node->type == 'program');
 }));
 $categories = array('events', 'publications', 'exhibitions', 'videos', 'residencies');
 $programs = array_slice($programs, 0, $howMany);
-
 foreach($programs as $thing){
 
-  $post = array();
-  $post['post_title'] = $thing->title;
-  $body = $thing->body->und[0]->value;
-  if (!$body) $body = $thing->body->en[0]->value;
-  if (!$body) $body = $thing->body->fr[0]->value;
-  $post['post_content'] = $body;
+  $post = createPostCommon($thing);
   $post['post_type'] = 'program';
-  $post['post_status'] = 'publish';
 
   // category
   $cat = array_values((array) $thing->field_todeparent->und[0]->value);
@@ -113,16 +150,7 @@ foreach($programs as $thing){
     }
 
     // images
-    if ($images) {
-      $first = true;
-      foreach ($thing->field_images->und as $imgInfo) {
-        $imgID = _import_photo($id, $imgInfo->node_export_file_url);
-        if ($first) {
-          add_post_meta($id, '_thumbnail_id', $imgID);
-          $first = false;
-        }
-      }
-    }
+    fetchImages($id, $thing, $images);
   }
 }
 

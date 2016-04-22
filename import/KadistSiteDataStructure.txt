@@ -1,0 +1,49 @@
+KADIST DATA STRUCTURE
+
+notes:
+  - Everything can be in English and French, but you can choose a "primaryLanguage"
+  - I've omitted common fields like author, status (published, draft...), updated...
+
+
+Program
+  - title
+  - body
+  - category (Publications, Events, Residencies, Exhibitions, Videos)
+  - location (San Francico, Paris, Offsite)
+  - starteDate
+  - endDate
+  - media (images, attachments, video URLS w/descriptions)
+  - Collections
+  - People
+  - Works
+  - Programs
+
+Work
+  - title
+  - body
+  - weight
+  - newAcquistion?
+  - production (N/A, Produced by Kadist, Co-produces by Kadist)
+  - workDate
+  - size
+  - medium
+  - media (images, attachments, video URLS w/descriptions)
+  - People
+  - Collections
+
+Collection 
+  - title (El Sur, Paris, Video Americas, 101, A3)
+  - body
+
+People
+  - fullName
+  - firstName
+  - lastName
+  - bio
+  - overview
+  - birthDate
+  - links (title, url)
+  - kapsul (title, url)
+  - media (only attachments?)
+
+

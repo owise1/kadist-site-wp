@@ -32,6 +32,18 @@ function create_post_type() {
 		)
 	);
 	register_taxonomy(
+		'medium',  //The name of the taxonomy. Name should be in slug form (must not contain capital letters or spaces).
+		'work',   		 //post type name
+		array(
+		  'label' 			=> 'Medium',  //Display name
+		  'query_var' 		=> true,
+		  'rewrite'			=> array(
+		    'slug' 			=> 'medium', // This controls the base slug that will display before each term
+		    'with_front' 	=> false // Don't display the category base before
+		  )
+		)
+	);
+	register_taxonomy(
 		'collections',  //The name of the taxonomy. Name should be in slug form (must not contain capital letters or spaces).
 		'work',   		 //post type name
 		array(
@@ -340,18 +352,6 @@ if(function_exists("register_field_group"))
 				'key' => 'field_5717f29f4a212',
 				'label' => 'Size',
 				'name' => 'size',
-				'type' => 'text',
-				'default_value' => '',
-				'placeholder' => '',
-				'prepend' => '',
-				'append' => '',
-				'formatting' => 'html',
-				'maxlength' => '',
-			),
-			array (
-				'key' => 'field_5717f2a54a213',
-				'label' => 'Medium',
-				'name' => 'medium',
 				'type' => 'text',
 				'default_value' => '',
 				'placeholder' => '',
