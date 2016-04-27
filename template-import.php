@@ -12,13 +12,33 @@
 
 include("import/functions.php");
 
-$run = true;
+$run = false;
 $images = false;
-$howMany = 2;
+$howMany = 5;
 
 $locations = array('1' => 'paris', '2' => 'san-francisco', '2079' => 'offsite');
 // get posts
 $posts = json_decode(file_get_contents(__DIR__ . "/import/kadist.json"));
+
+// people
+$people = array_values(array_filter($posts, function ($node) {
+  return($node->type == 'people');
+}));
+$people = array_slice($people, 0, $howMany);
+
+foreach($people as $thing){
+  $post = createPostCommon($thing);
+  $post['post_type'] = 'people';
+
+  if ($run) {
+    update_field('field_5717f2d3a8825',$thing->field_firstname->und[0]->value, $id);
+    update_field('field_5717f2d3a8826', $thing->field_lastname->und[0]->value, $id);
+    /* update_field('field_5717f2daa8827', $thing->field_firstname->und[0]->value, $id); // bio? */
+  }
+}
+
+
+return; // RETURN //
 
 // works
 $works = array_values(array_filter($posts, function ($node) {
@@ -91,14 +111,22 @@ foreach($works as $thing){
     if ($thing->field_collection->und[0]->tid) {
       wp_set_object_terms($id, $collections[$thing->field_collection->und[0]->tid], 'collections');
     }
+    // video urls
+    if ($thing->field_videos->und) {
+      $vals = array();
+      foreach($thing->field_videos->und as $link){
+        $vals[] = array('url' => $link->video_url);
+      }
+      update_field('field_ntjrk59e3jws9d', $vals, $id);
+    }
 
     // images
     fetchImages($id, $thing, $images);
   }
 
 }
-return;
 
+return;
 // programs
 $programs = array_values(array_filter($posts, function ($node) {
   return($node->type == 'program');
@@ -116,6 +144,7 @@ foreach($programs as $thing){
   $cat = strtolower($cat->name);
   $allCats[] = $cat;
 
+
   if ($run) {
     $id = wp_insert_post($post);
     if (!$id) {
@@ -127,6 +156,15 @@ foreach($programs as $thing){
     update_field($startDateKey, dateFormat($thing->field_program_date->und[0]->value), $id);
     update_field($endDateKey, dateFormat($thing->field_program_date->und[0]->value2), $id);
     update_field('field_57175553a8826', $thing->field_tode_program->und[0]->tid, $id);
+
+    // video links
+    if ($thing->field_videos->und) {
+      $vals = array();
+      foreach($thing->field_videos->und as $link){
+        $vals[] = array('url' => $link->video_url);
+      }
+      update_field('field_5717f59e3jws9d', $vals, $id);
+    }
 
     // french
     if ($thing->body->fr) {
