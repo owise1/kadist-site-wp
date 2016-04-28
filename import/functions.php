@@ -1,8 +1,8 @@
 <?php
 function dateFormat($d, $fmt='Ymd') {
-  return date($fmt, strtotime($d));
+  if ($d) return date($fmt, strtotime($d));
 }
-function _import_photo( $postid, $url ) {
+function _import_photo( $postid, $url, $fileName ) {
 	$post = get_post( $postid );
 	if( empty( $post ) )
 		return false;
@@ -15,7 +15,7 @@ function _import_photo( $postid, $url ) {
 	if( $photo['response']['code'] != 200 )
 		return false;
 
-	$attachment = wp_upload_bits( rand() . '.jpg', null, $photo['body'], date("Y-m", strtotime( $photo['headers']['last-modified'] ) ) );
+	$attachment = wp_upload_bits( $fileName, null, $photo['body'], date("Y-m", strtotime( $photo['headers']['last-modified'] ) ) );
 	if( !empty( $attachment['error'] ) )
 		return false;
 
@@ -45,18 +45,19 @@ function createPostCommon($thing){
   $body = $thing->body->und[0]->value;
   if (!$body) $body = $thing->body->en[0]->value;
   if (!$body) $body = $thing->body->fr[0]->value;
+  if (!$body) $body = 'nbsp;';
   $post['post_content'] = $body;
   $post['post_status'] = 'publish';
   return $post;
 
 }
 
-function fetchImages ($id, $thing, $images) {
+function fetchImages ($id, $thing, $images, $field='field_images') {
   if ($images) {
     $first = true;
-    foreach ($thing->field_images->und as $imgInfo) {
-      $imgID = _import_photo($id, $imgInfo->node_export_file_url);
-      if ($first) {
+    foreach ($thing->$field->und as $imgInfo) {
+      $imgID = _import_photo($id, $imgInfo->node_export_file_url, $imgInfo->origname);
+      if ($first && $field == 'field_images') {
         add_post_meta($id, '_thumbnail_id', $imgID);
         $first = false;
       }

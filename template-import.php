@@ -14,7 +14,7 @@ include("import/functions.php");
 
 $run = false;
 $images = false;
-$howMany = 5;
+$howMany = 2000;
 
 $locations = array('1' => 'paris', '2' => 'san-francisco', '2079' => 'offsite');
 // get posts
@@ -30,10 +30,24 @@ foreach($people as $thing){
   $post = createPostCommon($thing);
   $post['post_type'] = 'people';
 
+
   if ($run) {
-    update_field('field_5717f2d3a8825',$thing->field_firstname->und[0]->value, $id);
+    $id = wp_insert_post($post);
+    update_field('field_5717f2c3a8825',$thing->field_firstname->und[0]->value, $id);
     update_field('field_5717f2d3a8826', $thing->field_lastname->und[0]->value, $id);
-    /* update_field('field_5717f2daa8827', $thing->field_firstname->und[0]->value, $id); // bio? */
+    update_field('field_5717f2f5a8828', dateFormat($thing->field_birthdate->und[0]->value), $id);
+
+    //external links
+    if ($thing->field_external_link->und) {
+      $vals = array();
+      foreach($thing->field_external_link->und as $link){
+        $vals[] = array('url' => $link->url, 'title' => $link->title);
+      }
+      update_field('field_5717f59e3a19d', $vals, $id);
+    }
+
+    // attachments
+    fetchImages($id, $thing, $images, 'field_attachments');
   }
 }
 
