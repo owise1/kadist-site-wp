@@ -409,4 +409,30 @@ if(function_exists("register_field_group"))
 	));
 }
 
+// connections
+function my_connection_types() {
+    p2p_register_connection_type( array(
+        'name' => 'works_to_people',
+        'from' => 'work',
+        'to' => 'people'
+    ) );
+    p2p_register_connection_type( array(
+        'name' => 'programs_to_programs',
+        'from' => 'program',
+        'to' => 'program',
+        'reciprocal' => true
+    ) );
+    p2p_register_connection_type( array(
+        'name' => 'programs_to_works',
+        'from' => 'program',
+        'to' => 'work'
+    ) );
+    p2p_register_connection_type( array(
+        'name' => 'programs_to_people',
+        'from' => 'program',
+        'to' => 'people'
+    ) );
+}
+add_action( 'p2p_init', __NAMESPACE__ .'\\my_connection_types' );
+
 ?>
