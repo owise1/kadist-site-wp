@@ -68,6 +68,7 @@ function fetchImages ($id, $thing, $images, $field='field_images') {
   if ($images) {
     $first = true;
     foreach ($thing->$field->und as $imgInfo) {
+      echo $imgInfo->node_export_file_url . "<br/>";
       $imgID = _import_photo($id, $imgInfo->node_export_file_url, $imgInfo->origname);
       if ($first && $field == 'field_images') {
         add_post_meta($id, '_thumbnail_id', $imgID);

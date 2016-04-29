@@ -2,6 +2,47 @@
 /**
  * Template Name: Import Template
  */
+
+include("import/functions.php");
+
+$run = false;
+$howMany = 1000;
+
+$initImport = false;
+$connections = false;
+
+
+// get posts
+$posts = json_decode(file_get_contents(__DIR__ . "/import/kadist.json"));
+
+$importI = get_query_var('importI');
+if ($importI){
+  $i = $importI - 1;
+  $post = $posts[$i];
+  if ($post){
+    $postTypes = array('people', 'program', 'work');
+    if(in_array($post->type, $postTypes)){
+      $field = 'field_tode_' . $post->type;
+      $oid = $post->$field->und[0]->tid;
+
+      // images
+      foreach(getWpPosts($post->type, $oid) as $p){
+        fetchImages($p->ID, $post, true, $post->type == 'people' ? 'field_attachments' : 'field_images');
+      }
+
+      echo "imported " . $importI . " " . $post->type . " : " . $oid;
+
+    } else {
+      echo "skipped " . $importI;
+    }
+    echo "<h4><a href='/kadist/import-page'>STOP</a></h4>";
+    echo "<script>window.location.href='?importI=".($importI+1)."'</script>";
+  } else {
+    echo "Imported " . $importI . " posts";
+  }
+} else {
+  echo "<form ><input type='submit' value='Start Asset Import' /><input type='hidden' name='importI' value='1'></form>";
+}
 ?>
 
 <?php while (have_posts()) : the_post(); ?>
@@ -10,17 +51,6 @@
   <pre>
 <?php
 
-include("import/functions.php");
-
-$run = false;
-$howMany = 10;
-
-$images = false;
-$initImport = false;
-
-$locations = array('1' => 'paris', '2' => 'san-francisco', '2079' => 'offsite');
-// get posts
-$posts = json_decode(file_get_contents(__DIR__ . "/import/kadist.json"));
 
 
 if ($initImport) {
@@ -29,57 +59,13 @@ if ($initImport) {
   include(__DIR__ . "/import/import-programs.php");
 }
 
-
-/* include(__DIR__ . "/import/connect-works.php");
- */
-
-$programs = array_values(array_filter($posts, function ($node) {
-  return($node->type == 'program');
-}));
-$programs = array_slice($programs, 0, $howMany);
-
-foreach($programs as $thing){
-
-  // programs to people
-  if ($thing->field_people->und) {
-    foreach($thing->field_people->und as $person){
-      $personID = $person->tid;
-      if ($run) {
-        foreach(getWpPosts('program', $thing->field_tode_program->und[0]->tid) as $prog1){
-          foreach(getWpPosts('people', $personID) as $p){
-            p2p_type('programs_to_people')->connect($prog1->ID, $p->ID);
-          }
-        }
-      }
-    }
-  }
-  // programs to works
-  if ($thing->field_works->und) {
-    foreach($thing->field_works->und as $work){
-      $workID = $work->tid;
-      if ($run) {
-        foreach(getWpPosts('program', $thing->field_tode_program->und[0]->tid) as $prog1){
-          foreach(getWpPosts('work', $workID) as $w){
-            p2p_type('programs_to_works')->connect($prog1->ID, $w->ID);
-          }
-        }
-      }
-    }
-  }
-  // programs_to_programs
-  if ($thing->field_related_programs->und) {
-    foreach($thing->field_related_programs->und as $p){
-      $programID = $p->tid;
-      if ($run) {
-        foreach(getWpPosts('program', $thing->field_tode_program->und[0]->tid) as $prog1){
-          foreach(getWpPosts('program', $programID) as $prog2){
-            p2p_type('programs_to_programs')->connect($prog1->ID, $prog2->ID);
-          }
-        }
-      }
-    }
-  }
+if ($connections){
+  include(__DIR__ . "/import/connect-works.php");
+  include(__DIR__ . "/import/connect-programs.php");
 }
+
+
+
 
 ?>
   </pre>

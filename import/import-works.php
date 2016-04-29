@@ -46,6 +46,8 @@ foreach($works as $thing){
   $post = createPostCommon($thing);
   $post['post_type'] = 'work';
 
+  if (getWpPosts('work', $thing->field_tode_work->und[0]->tid)) continue;
+
   if ($run) {
     $id = wp_insert_post($post);
     // weight
@@ -80,8 +82,6 @@ foreach($works as $thing){
       update_field('field_ntjrk59e3jws9d', $vals, $id);
     }
 
-    // images
-    fetchImages($id, $thing, $images);
   }
 
 }

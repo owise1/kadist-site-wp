@@ -459,4 +459,9 @@ function my_connection_types() {
 }
 add_action( 'p2p_init', __NAMESPACE__ .'\\my_connection_types' );
 
+add_filter('query_vars', __NAMESPACE__ .'\\add_my_var');
+function add_my_var($public_query_vars) {
+	$public_query_vars[] = 'importI';
+	return $public_query_vars;
+}
 ?>

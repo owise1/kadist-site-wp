@@ -1,5 +1,7 @@
 <?php
 
+$locations = array('1' => 'paris', '2' => 'san-francisco', '2079' => 'offsite');
+
 // programs
 $programs = array_values(array_filter($posts, function ($node) {
   return($node->type == 'program');
@@ -10,6 +12,8 @@ foreach($programs as $thing){
 
   $post = createPostCommon($thing);
   $post['post_type'] = 'program';
+
+  if (getWpPosts('program', $thing->field_tode_program->und[0]->tid)) continue;
 
   // category
   $cat = array_values((array) $thing->field_todeparent->und[0]->value);
@@ -60,8 +64,6 @@ foreach($programs as $thing){
     } else {
     }
 
-    // images
-    fetchImages($id, $thing, $images);
   }
 }
 ?>

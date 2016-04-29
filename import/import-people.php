@@ -6,10 +6,12 @@ $people = array_values(array_filter($posts, function ($node) {
 }));
 $people = array_slice($people, 0, $howMany);
 
+
 foreach($people as $thing){
   $post = createPostCommon($thing);
   $post['post_type'] = 'people';
-  var_dump($thing);
+
+  if (getWpPosts('people', $thing->field_tode_people->und[0]->tid)) continue;
 
   if ($run) {
     $id = wp_insert_post($post);
@@ -27,8 +29,6 @@ foreach($people as $thing){
       update_field('field_5717f59e3a19d', $vals, $id);
     }
 
-    // attachments
-    fetchImages($id, $thing, $images, 'field_attachments');
   }
 }
 
