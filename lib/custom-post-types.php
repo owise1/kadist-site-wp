@@ -169,6 +169,18 @@ if(function_exists("register_field_group"))
 				'layout' => 'row',
 				'button_label' => 'Add Link',
 			),
+			array (
+				'key' => 'field_zzzz75553a8826',
+				'label' => 'Original ID',
+				'name' => 'oid',
+				'type' => 'text',
+				'default_value' => '',
+				'placeholder' => '',
+				'prepend' => '',
+				'append' => '',
+				'formatting' => 'html',
+				'maxlength' => '',
+			),
 		),
 		'location' => array (
 			array (
@@ -386,6 +398,18 @@ if(function_exists("register_field_group"))
 				'row_limit' => '',
 				'layout' => 'row',
 				'button_label' => 'Add Link',
+			),
+			array (
+				'key' => 'field_zzxz75553a8826',
+				'label' => 'Original ID',
+				'name' => 'oid',
+				'type' => 'text',
+				'default_value' => '',
+				'placeholder' => '',
+				'prepend' => '',
+				'append' => '',
+				'formatting' => 'html',
+				'maxlength' => '',
 			),
 		),
 		'location' => array (

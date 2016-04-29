@@ -1,7 +1,19 @@
 <?php
+
+function getWpPosts($type, $oid){
+  if (!$oid) return array();
+  return get_posts(array(
+    'numberposts' => -1,
+    'post_type' => $type,
+    'meta_key' => 'oid',
+    'meta_value' => $oid
+  ));
+}
+
 function dateFormat($d, $fmt='Ymd') {
   if ($d) return date($fmt, strtotime($d));
 }
+
 function _import_photo( $postid, $url, $fileName ) {
 	$post = get_post( $postid );
 	if( empty( $post ) )
@@ -41,7 +53,7 @@ function createPostCommon($thing){
   global $images;
 
   $post = array();
-  $post['post_title'] = $thing->title;
+  $post['post_title'] = $thing->title ? $thing->title : 'untitled';
   $body = $thing->body->und[0]->value;
   if (!$body) $body = $thing->body->en[0]->value;
   if (!$body) $body = $thing->body->fr[0]->value;
