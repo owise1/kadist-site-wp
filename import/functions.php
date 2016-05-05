@@ -67,7 +67,11 @@ function createPostCommon($thing){
 function fetchImages ($id, $thing, $images, $field='field_images') {
   if ($images) {
     $first = true;
+    if (!$thing->$field) return;
+    if (!$thing->$field->und) return;
     foreach ($thing->$field->und as $imgInfo) {
+      if (!$imgInfo) continue;
+      if (!$imgInfo->node_export_file_url) continue;
       echo $imgInfo->node_export_file_url . "<br/>";
       $imgID = _import_photo($id, $imgInfo->node_export_file_url, $imgInfo->origname);
       if ($first && $field == 'field_images') {

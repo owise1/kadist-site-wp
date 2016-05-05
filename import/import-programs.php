@@ -9,7 +9,6 @@ $programs = array_values(array_filter($posts, function ($node) {
 $categories = array('events', 'publications', 'exhibitions', 'videos', 'residencies');
 $programs = array_slice($programs, 0, $howMany);
 foreach($programs as $thing){
-
   $post = createPostCommon($thing);
   $post['post_type'] = 'program';
 

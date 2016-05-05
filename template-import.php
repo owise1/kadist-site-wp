@@ -5,12 +5,14 @@
 
 include("import/functions.php");
 
-$run = false;
-$howMany = 1000;
+$run = true;
+$howMany = 2000;
 
 $initImport = false;
 $connections = false;
 
+// problems
+// 593, 830, 993, 995, 1388, 1093, 1099, 1108, 1873
 
 // get posts
 $posts = json_decode(file_get_contents(__DIR__ . "/import/kadist.json"));
