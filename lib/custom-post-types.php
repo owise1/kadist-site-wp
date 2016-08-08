@@ -26,6 +26,7 @@ function create_post_type() {
 		'public' => true,
 		'has_archive' => true,
 		'menu_icon' => get_template_directory_uri() .'/assets/images/program.png',
+    'show_in_rest' => true,
 		'menu_position' => 2,
 		'supports' => array('title', 'editor', 'excerpt', 'author', 'thumbnail'),
 		'rewrite' => array('has_archive' => true,'slug' => 'program')
@@ -67,6 +68,7 @@ function create_post_type() {
 		'taxonomies' => array('collections'),
 		'menu_icon' => get_template_directory_uri() .'/assets/images/artwork.png',
 		'menu_position' => 3,
+    'show_in_rest' => true,
 		'supports' => array('title', 'editor', 'thumbnail', 'excerpt'),
 		'rewrite' => array('has_archive' => true,'slug' => 'work')
 		)
@@ -82,6 +84,7 @@ function create_post_type() {
 		'taxonomies' => array('groups'),
 		'menu_icon' => get_template_directory_uri() .'/assets/images/people.png',
 		'menu_position' => 4,
+    'show_in_rest' => true,
 		'supports' => array('title', 'editor', 'thumbnail', 'excerpt'),
 		'rewrite' => array('has_archive' => true,'slug' => 'people')
 		)
