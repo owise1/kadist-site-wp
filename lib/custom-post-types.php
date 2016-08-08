@@ -10,6 +10,7 @@ function create_post_type() {
 		  'hierarchical' 		=> true,
 		  'label' 			=> 'Location',  //Display name
 		  'query_var' 		=> true,
+      'show_in_rest'       => true,
 		  'rewrite'			=> array(
 		    'slug' 			=> 'location', // This controls the base slug that will display before each term
 		    'with_front' 	=> false // Don't display the category base before
@@ -38,6 +39,7 @@ function create_post_type() {
 		array(
 		  'label' 			=> 'Medium',  //Display name
 		  'query_var' 		=> true,
+      'show_in_rest'       => true,
 		  'rewrite'			=> array(
 		    'slug' 			=> 'medium', // This controls the base slug that will display before each term
 		    'with_front' 	=> false // Don't display the category base before
@@ -51,6 +53,7 @@ function create_post_type() {
 		  'hierarchical' 		=> true,
 		  'label' 			=> 'Collection',  //Display name
 		  'query_var' 		=> true,
+      'show_in_rest'       => true,
 		  'rewrite'			=> array(
 		    'slug' 			=> 'collection', // This controls the base slug that will display before each term
 		    'with_front' 	=> false // Don't display the category base before
