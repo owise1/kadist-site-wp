@@ -18,20 +18,20 @@ function create_post_type() {
 		)
 	);
 	register_post_type( 'program',
-		array(
-			'labels' => array(
-				'name' => __( 'Programs' ),
-				'singular_name' => __( 'Program' )
-			),
-    'taxonomies' => array('category', 'location'),
-		'public' => true,
-		'has_archive' => true,
-		'menu_icon' => get_template_directory_uri() .'/assets/images/program.png',
-    'show_in_rest' => true,
-		'menu_position' => 2,
-		'supports' => array('title', 'editor', 'excerpt', 'author', 'thumbnail'),
-		'rewrite' => array('has_archive' => true,'slug' => 'program')
-		)
+    array(
+      'labels' => array(
+        'name' => __( 'Programs' ),
+        'singular_name' => __( 'Program' )
+      ),
+      'taxonomies' => array('category', 'location'),
+      'public' => true,
+      'has_archive' => true,
+      'menu_icon' => get_template_directory_uri() .'/assets/images/program.png',
+      'show_in_rest' => true,
+      'menu_position' => 2,
+      'supports' => array('title', 'editor', 'excerpt', 'author', 'thumbnail'),
+      'rewrite' => array('has_archive' => true,'slug' => 'program')
+    )
 	);
 	register_taxonomy(
 		'medium',  //The name of the taxonomy. Name should be in slug form (must not contain capital letters or spaces).
@@ -61,36 +61,36 @@ function create_post_type() {
 		)
 	);
 	register_post_type( 'work',
-		array(
-			'labels' => array(
-				'name' => __( 'Works' ),
-				'singular_name' => __( 'Work' )
-			),
-		'public' => true,
-		'has_archive' => true,
-		'taxonomies' => array('collections'),
-		'menu_icon' => get_template_directory_uri() .'/assets/images/artwork.png',
-		'menu_position' => 3,
-    'show_in_rest' => true,
-		'supports' => array('title', 'editor', 'thumbnail', 'excerpt'),
-		'rewrite' => array('has_archive' => true,'slug' => 'work')
-		)
+    array(
+      'labels' => array(
+        'name' => __( 'Works' ),
+        'singular_name' => __( 'Work' )
+      ),
+      'public' => true,
+      'has_archive' => true,
+      'taxonomies' => array('collections'),
+      'menu_icon' => get_template_directory_uri() .'/assets/images/artwork.png',
+      'menu_position' => 3,
+      'show_in_rest' => true,
+      'supports' => array('title', 'editor', 'thumbnail', 'excerpt'),
+      'rewrite' => array('has_archive' => true,'slug' => 'work')
+    )
 	);
 	register_post_type( 'people',
-		array(
-			'labels' => array(
-				'name' => __( 'People' ),
-				'singular_name' => __( 'Person' )
-			),
-		'public' => true,
-		'has_archive' => true,
-		'taxonomies' => array('groups'),
-		'menu_icon' => get_template_directory_uri() .'/assets/images/people.png',
-		'menu_position' => 4,
-    'show_in_rest' => true,
-		'supports' => array('title', 'editor', 'thumbnail', 'excerpt'),
-		'rewrite' => array('has_archive' => true,'slug' => 'people')
-		)
+    array(
+      'labels' => array(
+        'name' => __( 'People' ),
+        'singular_name' => __( 'Person' )
+      ),
+      'public' => true,
+      'has_archive' => true,
+      'taxonomies' => array('groups'),
+      'menu_icon' => get_template_directory_uri() .'/assets/images/people.png',
+      'menu_position' => 4,
+      'show_in_rest' => true,
+      'supports' => array('title', 'editor', 'thumbnail', 'excerpt'),
+      'rewrite' => array('has_archive' => true,'slug' => 'people')
+    )
 	);
 }
 // advanced custom fields
@@ -441,27 +441,27 @@ if(function_exists("register_field_group"))
 
 // connections
 function my_connection_types() {
-    p2p_register_connection_type( array(
-        'name' => 'works_to_people',
-        'from' => 'work',
-        'to' => 'people'
-    ) );
-    p2p_register_connection_type( array(
-        'name' => 'programs_to_programs',
-        'from' => 'program',
-        'to' => 'program',
-        'reciprocal' => true
-    ) );
-    p2p_register_connection_type( array(
-        'name' => 'programs_to_works',
-        'from' => 'program',
-        'to' => 'work'
-    ) );
-    p2p_register_connection_type( array(
-        'name' => 'programs_to_people',
-        'from' => 'program',
-        'to' => 'people'
-    ) );
+  p2p_register_connection_type( array(
+    'name' => 'works_to_people',
+    'from' => 'work',
+    'to' => 'people'
+  ) );
+  p2p_register_connection_type( array(
+    'name' => 'programs_to_programs',
+    'from' => 'program',
+    'to' => 'program',
+    'reciprocal' => true
+  ) );
+  p2p_register_connection_type( array(
+    'name' => 'programs_to_works',
+    'from' => 'program',
+    'to' => 'work'
+  ) );
+  p2p_register_connection_type( array(
+    'name' => 'programs_to_people',
+    'from' => 'program',
+    'to' => 'people'
+  ) );
 }
 add_action( 'p2p_init', __NAMESPACE__ .'\\my_connection_types' );
 
@@ -469,5 +469,76 @@ add_filter('query_vars', __NAMESPACE__ .'\\add_my_var');
 function add_my_var($public_query_vars) {
 	$public_query_vars[] = 'importI';
 	return $public_query_vars;
+}
+
+
+add_action( 'rest_api_init', __NAMESPACE__ . '\\rest_api_init' );
+function rest_api_init() {
+  $fields = array(
+    'program' => array(
+      'start_date',
+      'end_date',
+      'oid',
+      'links',
+      'programs_to_programs',
+      'programs_to_works',
+      'programs_to_people'
+    ),
+    'work' => array(
+      'new_acquisition',
+      'weight',
+      'production',
+      'work_date',
+      'size',
+      'oid',
+      'links',
+      'programs_to_works',
+      'works_to_people'
+    ),
+    'people' => array(
+      'first_name',
+      'last_name',
+      'birth_date',
+      'links',
+      'oid',
+      'works_to_people',
+      'programs_to_people'
+    )
+  );
+  foreach ($fields as $type => $fs) {
+    foreach ($fs as $field) {
+      register_rest_field( $type,
+                           $field,
+                           array(
+                             'get_callback'    => __NAMESPACE__ . '\\get_api_field',
+                             'update_callback' => null,
+                             'schema'          => null,
+                           )
+      );
+    }
+  }
+}
+
+/**
+ * Get the value of the custom field
+ *
+ * @param array $object Details of current post.
+ * @param string $field_name Name of field.
+ * @param WP_REST_Request $request Current request
+ *
+ * @return mixed
+ */
+function get_api_field( $object, $field_name, $request ) {
+  if (stristr($field_name, '_to_')) {
+    $connected = p2p_type($field_name)->get_connected($object);
+    $ret = array();
+    while ($connected->have_posts()) {
+      $connected->the_post();
+      $ret[] = get_the_id();
+    }
+    return $ret;
+  }
+
+  return get_field( $field_name, $object[ 'id' ] );
 }
 ?>
