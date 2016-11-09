@@ -4,6 +4,19 @@ namespace Kadist;
 add_action( 'init', __NAMESPACE__ . '\\create_post_type' );
 function create_post_type() {
 	register_taxonomy(
+		'region',  //The name of the taxonomy. Name should be in slug form (must not contain capital letters or spaces).
+		['program','work'],   		 //post type name
+		array(
+		  'label' 			=> 'Region',  //Display name
+		  'query_var' 		=> true,
+      'show_in_rest'       => true,
+		  'rewrite'			=> array(
+		    'slug' 			=> 'region', // This controls the base slug that will display before each term
+		    'with_front' 	=> false // Don't display the category base before
+		  )
+		)
+	);
+	register_taxonomy(
 		'location',  //The name of the taxonomy. Name should be in slug form (must not contain capital letters or spaces).
 		'program',   		 //post type name
 		array(
@@ -23,7 +36,7 @@ function create_post_type() {
         'name' => __( 'Programs' ),
         'singular_name' => __( 'Program' )
       ),
-      'taxonomies' => array('category', 'location'),
+      'taxonomies' => array('category', 'location', 'region'),
       'public' => true,
       'has_archive' => true,
       'menu_icon' => get_template_directory_uri() .'/assets/images/program.png',
@@ -68,7 +81,7 @@ function create_post_type() {
       ),
       'public' => true,
       'has_archive' => true,
-      'taxonomies' => array('collections'),
+      'taxonomies' => array('collections','region'),
       'menu_icon' => get_template_directory_uri() .'/assets/images/artwork.png',
       'menu_position' => 3,
       'show_in_rest' => true,

@@ -15,7 +15,7 @@ $connections = false;
 // 593, 830, 993, 995, 1388, 1093, 1099, 1108, 1873
 
 // get posts
-$posts = json_decode(file_get_contents(__DIR__ . "/import/kadist.json"));
+$posts = json_decode(file_get_contents(__DIR__ . "/import/kadist-20161006-clean.json"));
 
 $importI = get_query_var('importI');
 if ($importI){
