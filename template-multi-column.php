@@ -1,6 +1,6 @@
 <?php
 /**
- * Template Name: 3 Column 
+ * Template Name: Multi Column 
  */
 ?>
 
@@ -8,14 +8,10 @@
   <?php get_template_part('templates/page', 'header'); ?>
   <?php get_template_part('templates/content', 'page'); ?>
   <div class="columns">
-    <div class="col1">
-      <?= get_field('col1') ?>
-    </div>
-    <div class="col2">
-      <?= get_field('col2') ?>
-    </div>
-    <div class="col3">
-      <?= get_field('col3') ?>
-    </div>
+    <?php foreach(get_field('columns') as $col) : ?>
+      <div class="col col-<?= ++$i ?>">
+        <?= $col['col'] ?>
+      </div>
+    <?php endforeach; ?>
   </div>
 <?php endwhile; ?>
