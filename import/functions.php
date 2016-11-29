@@ -82,5 +82,15 @@ function fetchImages ($id, $thing, $images, $field='field_images') {
   }
 }
 
+function fetchTitle ($id, $thing) {
+    $field = 'field_images';
+    if (!$thing->$field) return;
+    if (!$thing->$field->und) return;
+    foreach ($thing->$field->und as $imgInfo) {
+      if (!$imgInfo) continue;
+      $title = $imgInfo->title;
+      return split(',', $title)[0];
+    }
+}
 
 ?>

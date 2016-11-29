@@ -15,7 +15,25 @@ $connections = false;
 // 593, 830, 993, 995, 1388, 1093, 1099, 1108, 1873
 
 // get posts
+error_reporting(E_ALL);
 $posts = json_decode(file_get_contents(__DIR__ . "/import/kadist-20161006-clean.json"));
+
+// caption
+$works = array_values(array_filter($posts, function ($node) {
+  return($node->type == 'work');
+}));
+  foreach($works as $work){
+    $field = 'field_tode_' . $work->type;
+    $oid = $work->$field->und[0]->tid;
+    echo $oid . '.<br/>';
+    if($title = fetchTitle($oid, $work)){
+     var_dump($title );
+      
+    }
+    
+  }
+
+
 
 $importI = get_query_var('importI');
 if ($importI){

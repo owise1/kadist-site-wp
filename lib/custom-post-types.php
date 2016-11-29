@@ -338,6 +338,14 @@ if(function_exists("register_field_group"))
 				'maxlength' => '',
 			),
 			array (
+				'key' => 'field_5zz7f20f4a20f',
+				'label' => 'Online Project',
+				'name' => 'online_project',
+				'type' => 'true_false',
+				'message' => '',
+				'default_value' => 0,
+			),
+			array (
 				'key' => 'field_5717f20f4a20f',
 				'label' => 'New Acquisition',
 				'name' => 'new_acquisition',
@@ -450,6 +458,99 @@ if(function_exists("register_field_group"))
 		),
 		'menu_order' => 0,
 	));
+  register_field_group(array (
+    'id' => 'acf_location-fields',
+    'title' => 'Location Fields',
+    'fields' => array (
+      array (
+        'key' => 'field_583d041fe2cbe',
+        'label' => 'Address',
+        'name' => 'address',
+        'type' => 'wysiwyg',
+        'default_value' => '',
+        'toolbar' => 'full',
+        'media_upload' => 'yes',
+      ),
+      array (
+        'key' => 'field_583d042ee2cbf',
+        'label' => 'Hours',
+        'name' => 'hours',
+        'type' => 'wysiwyg',
+        'default_value' => '',
+        'toolbar' => 'full',
+        'media_upload' => 'yes',
+      ),
+    ),
+    'location' => array (
+      array (
+        array (
+          'param' => 'ef_taxonomy',
+          'operator' => '==',
+          'value' => 'location',
+          'order_no' => 0,
+          'group_no' => 0,
+        ),
+      ),
+    ),
+    'options' => array (
+      'position' => 'normal',
+      'layout' => 'no_box',
+      'hide_on_screen' => array (
+      ),
+    ),
+    'menu_order' => 0,
+  ));
+  register_field_group(array (
+    'id' => 'acf_3-columns',
+    'title' => '3 columns',
+    'fields' => array (
+      array (
+        'key' => 'field_583d0741b76c8',
+        'label' => 'Column 1',
+        'name' => 'col1',
+        'type' => 'wysiwyg',
+        'default_value' => '',
+        'toolbar' => 'full',
+        'media_upload' => 'yes',
+      ),
+      array (
+        'key' => 'field_583d074eb76c9',
+        'label' => 'Column 2',
+        'name' => 'col2',
+        'type' => 'wysiwyg',
+        'default_value' => '',
+        'toolbar' => 'full',
+        'media_upload' => 'yes',
+      ),
+      array (
+        'key' => 'field_583d0755b76ca',
+        'label' => 'Column 3',
+        'name' => 'col3',
+        'type' => 'wysiwyg',
+        'default_value' => '',
+        'toolbar' => 'full',
+        'media_upload' => 'yes',
+      ),
+    ),
+    'location' => array (
+      array (
+        array (
+          'param' => 'page_template',
+          'operator' => '==',
+          'value' => 'template-3-column.php',
+          'order_no' => 0,
+          'group_no' => 0,
+        ),
+      ),
+    ),
+    'options' => array (
+      'position' => 'normal',
+      'layout' => 'no_box',
+      'hide_on_screen' => array (
+      ),
+    ),
+    'menu_order' => 0,
+  ));
 }
 
 // connections
