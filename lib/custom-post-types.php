@@ -252,6 +252,18 @@ if(function_exists("register_field_group"))
 				'first_day' => 1,
 			),
 			array (
+				'key' => 'field_57175553ahgj26',
+				'label' => 'Start Time',
+				'name' => 'start_time',
+				'type' => 'text',
+				'default_value' => '',
+				'placeholder' => '',
+				'prepend' => '',
+				'append' => '',
+				'formatting' => 'html',
+				'maxlength' => '',
+			),
+			array (
 				'key' => 'field_57175553a8826',
 				'label' => 'Original ID',
 				'name' => 'oid',
